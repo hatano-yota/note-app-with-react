@@ -3,12 +3,12 @@ import uuid from "react-uuid";
 import "./App.css";
 import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
+import { Note } from "./types/Types";
 
 function App() {
-  const [notes, setNotes] = useState(
-    JSON.parse(localStorage.getItem("notes")) || []
-  );
-  const [activeNote, setActiveNote] = useState("");
+  const initialNotes = JSON.parse(localStorage.getItem("notes") ?? "[]");
+  const [notes, setNotes] = useState<Note[]>(initialNotes);
+  const [activeNote, setActiveNote] = useState<string | undefined>("");
 
   useEffect(() => {
     //ローカルストレージにノートを保存する
@@ -16,7 +16,9 @@ function App() {
   }, [notes]);
 
   useEffect(() => {
-    setActiveNote(notes[0].id);
+    if (notes[0]) {
+      setActiveNote(notes[0].id);
+    }
   }, []);
 
   const onAddNote = () => {
@@ -32,7 +34,7 @@ function App() {
 
   // console.log(notes);
 
-  const onDeleteNote = (id) => {
+  const onDeleteNote = (id?: string) => {
     const filterNotes = notes.filter((note) => note.id !== id);
     setNotes(filterNotes);
   };
@@ -41,7 +43,7 @@ function App() {
     return notes.find((note) => note.id === activeNote);
   };
 
-  const onUpdateNote = (updatedNote) => {
+  const onUpdateNote = (updatedNote: Note) => {
     //修正された新しいノートの配列を返す。
     const updatedNotesArray = notes.map((note) => {
       if (note.id === updatedNote.id) {

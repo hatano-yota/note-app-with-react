@@ -1,9 +1,14 @@
-import React from "react";
+import { Note } from "../types/Types";
 import "./styles/Main.css";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
-const Main = ({ activeNote, onUpdateNote }) => {
-  const onEditNote = (key, value) => {
+type Props = {
+  activeNote?: Note;
+  onUpdateNote: (updatedNote: Note) => void;
+};
+
+const Main = ({ activeNote, onUpdateNote }: Props) => {
+  const onEditNote = (key: string, value: string) => {
     onUpdateNote({
       ...activeNote,
       //プロパティが重複しているやつは置き換わる(更新される)
@@ -35,9 +40,7 @@ const Main = ({ activeNote, onUpdateNote }) => {
       </div>
       <div className="app-main-note-preview">
         <h1 className="preview-title">{activeNote.title}</h1>
-        <ReactMarkdown className="markdown-preview">
-          {activeNote.content}
-        </ReactMarkdown>
+        <ReactMarkdown className="markdown-preview">{activeNote.content ?? ""}</ReactMarkdown>
       </div>
     </div>
   );

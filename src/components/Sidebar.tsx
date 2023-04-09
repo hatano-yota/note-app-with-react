@@ -1,13 +1,16 @@
 import React from "react";
 import "./styles/Sidebar.css";
+import { Note } from "../types/Types";
 
-const Sidebar = ({
-  onAddNote,
-  onDeleteNote,
-  notes,
-  activeNote,
-  setActiveNote,
-}) => {
+type Props = {
+  onAddNote: () => void;
+  onDeleteNote: (id?: string) => void;
+  notes: Note[];
+  activeNote?: string;
+  setActiveNote: React.Dispatch<React.SetStateAction<string | undefined>>;
+};
+
+const Sidebar = ({ onAddNote, onDeleteNote, notes, activeNote, setActiveNote }: Props) => {
   const sortedNotes = notes.sort((a, b) => b.modDate - a.modDate);
 
   return (
